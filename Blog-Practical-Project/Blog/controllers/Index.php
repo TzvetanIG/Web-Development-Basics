@@ -8,8 +8,9 @@
 
 namespace Controllers;
 
+use GFramework\App;
+
 class Index {
     public function deleteById(){
-        echo "I am deleteById";
     }
 } 

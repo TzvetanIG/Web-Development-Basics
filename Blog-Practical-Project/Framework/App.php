@@ -4,6 +4,8 @@ namespace GFramework;
 
 use GFramework\Routers\DefaultRouter;
 use \GFramework\Routers\iRouter;
+use GFramework\Sessions\iSession;
+use GFramework\Sessions\NativeSession;
 
 include 'Loader.php';
 
@@ -23,6 +25,7 @@ class App
      */
     private $router = null;
     private $dbConnections = array();
+    private $session = null;
 
     private function __construct()
     {
@@ -69,6 +72,27 @@ class App
         }
 
         $this->frontController->dispatch();
+
+        $session = $this->config->app['session'];
+        if($session['autostart']){
+         switch($session['type']){
+             case 'native':
+                 $this->session = new NativeSession($session['name'], $session['lifetime'], $session['path'],
+                    $session['domain'], $session['secure']);
+         }
+        }
+    }
+
+    public function  setSession(iSession $session)
+    {
+        $this->session = $session;
+    }
+
+    /**
+     * @return iSession
+     */
+    public function getSession(){
+        return $this->session;
     }
 
     public function getDbConnection($connection = 'default')

@@ -83,9 +83,9 @@ class FrontController
 
         $this->controller = ucfirst($this->controller);
         $controllerFile = "{$this->namespace}\\{$this->controller}";
-        echo $this->namespace . '<br>' . $this->controller . '<br>' . $this->method;
+//        echo $this->namespace . '<br>' . $this->controller . '<br>' . $this->method;
         //TODO
-        $controllerObj = new $controllerFile();
+//        $controllerObj = new $controllerFile();
 //        $controllerObj->{$this->method}();
     }
 

@@ -10,6 +10,8 @@ $cnf['administration']['controllers']['index']['methods']['delete'] = 'deleteByI
 
 $cnf['administration']['controllers']['new']['newName'] = 'create';
 
+$cnf['*']['controllers']['index']['methods']['delete'] = 'deleteById';
+
 $cnf['*']['namespace'] = 'Controllers';
 
 return $cnf;
