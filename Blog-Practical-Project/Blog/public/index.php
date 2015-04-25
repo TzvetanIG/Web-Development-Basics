@@ -5,4 +5,4 @@ include '../../Framework/App.php';
 $app = GFramework\App::getInstance();
 $app->run();
 
-var_dump($app->getDbConnection());
+
