@@ -4,6 +4,7 @@ namespace GFramework;
 
 use GFramework\Routers\DefaultRouter;
 use \GFramework\Routers\iRouter;
+use GFramework\Sessions\DbSession;
 use GFramework\Sessions\iSession;
 use GFramework\Sessions\NativeSession;
 
@@ -25,6 +26,9 @@ class App
      */
     private $router = null;
     private $dbConnections = array();
+    /**
+     * @var iSession
+     */
     private $session = null;
 
     private function __construct()
@@ -74,12 +78,23 @@ class App
         $this->frontController->dispatch();
 
         $session = $this->config->app['session'];
-        if($session['autostart']){
-         switch($session['type']){
-             case 'native':
-                 $this->session = new NativeSession($session['name'], $session['lifetime'], $session['path'],
-                    $session['domain'], $session['secure']);
-         }
+        if ($session['autostart']) {
+            switch ($session['type']) {
+                case 'native':
+                    $s = new NativeSession($session['name'], $session['lifetime'], $session['path'],
+                        $session['domain'], $session['secure']);
+                    break;
+                case 'database':
+                    $s = new DbSession($session['dbConnection'], $session['name'], $session['dbTable'],
+                        $session['lifetime'], $session['path'], $session['domain'], $session['secure']);
+                    break;
+                default:
+                    //TODO
+                    throw new \Exception('No valid session', 500);
+                    break;
+            }
+
+            $this->setSession($s);
         }
     }
 
@@ -91,23 +106,24 @@ class App
     /**
      * @return iSession
      */
-    public function getSession(){
+    public function getSession()
+    {
         return $this->session;
     }
 
     public function getDbConnection($connection = 'default')
     {
-        if(!$connection){
+        if (!$connection) {
             //TODO
             throw new \Exception('No connection identifier provided', 500);
         }
 
-        if($this->dbConnections[$connection]){
+        if ($this->dbConnections[$connection]) {
             return $this->dbConnections[$connection];
         }
 
         $config = $this->getConfig()->database[$connection];
-        if(!$config){
+        if (!$config) {
             //TODO
             throw new \Exception('No valid connection identificator is provided', 500);
         }
@@ -139,4 +155,11 @@ class App
     {
         $this->router = $router;
     }
-} 
+
+    public function __destruct()
+    {
+        if($this->session != null){
+            $this->session->saveSession();
+        }
+    }
+}

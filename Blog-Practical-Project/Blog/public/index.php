@@ -5,9 +5,7 @@ include '../../Framework/App.php';
 $app = GFramework\App::getInstance();
 $app->run();
 
-$app->getSession()->counter += 1;
-echo $app->getSession()->counter;
-echo session_name();
+
 
 
 

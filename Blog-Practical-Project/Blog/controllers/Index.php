@@ -9,8 +9,12 @@
 namespace Controllers;
 
 use GFramework\App;
+use GFramework\View;
 
 class Index {
-    public function deleteById(){
+    public function index(){
+        $view = View::getInstance();
+        $view->username = 'Ceco';
+        $view->display('admin.index');
     }
 } 

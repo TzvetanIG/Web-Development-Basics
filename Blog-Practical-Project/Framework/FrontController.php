@@ -22,7 +22,7 @@ class FrontController
     public static function getInstance()
     {
         if (self::$instance == null) {
-            self::$instance = new \GFramework\FrontController();
+            self::$instance = new FrontController();
         }
 
         return self::$instance;
@@ -85,8 +85,8 @@ class FrontController
         $controllerFile = "{$this->namespace}\\{$this->controller}";
 //        echo $this->namespace . '<br>' . $this->controller . '<br>' . $this->method;
         //TODO
-//        $controllerObj = new $controllerFile();
-//        $controllerObj->{$this->method}();
+        $controllerObj = new $controllerFile();
+        $controllerObj->{$this->method}();
     }
 
     public function getDefaultController()
