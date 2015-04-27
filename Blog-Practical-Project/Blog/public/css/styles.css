@@ -1,0 +1,12 @@
+header {
+    font-size: 3rem;
+    text-align: center;
+}
+
+form .form-group label.control-label {
+    text-align: left;
+}
+
+.center {
+    text-align:  center;
+}
