@@ -10,6 +10,9 @@ class View
     private $___viewDir = null;
     private $___data = array();
     private $___extension = '.php';
+    private $___layoutData = array();
+    private $___layoutParts = array();
+
 
     private function __construct()
     {
@@ -64,10 +67,32 @@ class View
             $this->___data = array_merge($this->___data, $data);
         }
 
+        if(count($this->___layoutParts) > 0) {
+            foreach($this->___layoutParts as $k => $v) {
+                $templateContent = $this->includeFile($v);
+                if($templateContent){
+                    $this->___layoutData[$k] = $templateContent;
+                }
+            }
+        }
+
         if ($returnAsString) {
             return $this->includeFile($name);
         } else {
             echo $this->includeFile($name);
+        }
+    }
+
+    public function getLayoutData($layoutName) {
+        return $this->___layoutData[$layoutName];
+    }
+
+    public function appendLayout($key, $template)
+    {
+        if($key && $template){
+            $this->___layoutParts[$key] = $template;
+        } else {
+            throw new \Exception('Layout key and template are required', 500);
         }
     }
 
@@ -83,7 +108,7 @@ class View
             return ob_get_clean();
         } else {
             //TODO
-            throw new \Exception('View ' . $file . 'cannot included', 500);
+            throw new \Exception('View ' . $file . ' cannot included', 500);
         }
     }
-} 
+}

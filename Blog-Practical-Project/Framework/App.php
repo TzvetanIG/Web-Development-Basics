@@ -75,8 +75,6 @@ class App
             $this->frontController->setRouter(new DefaultRouter());
         }
 
-        $this->frontController->dispatch();
-
         $session = $this->config->app['session'];
         if ($session['autostart']) {
             switch ($session['type']) {
@@ -96,6 +94,9 @@ class App
 
             $this->setSession($s);
         }
+
+
+        $this->frontController->dispatch();
     }
 
     public function  setSession(iSession $session)

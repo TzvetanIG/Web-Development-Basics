@@ -6,8 +6,8 @@ $cnf['namespaces']['Controllers'] = 'D:\SoftUni\Web-Development-Basics\Blog-Prac
 $cnf['viewsDirectory'] = 'D:\SoftUni\Web-Development-Basics\Blog-Practical-Project\Blog\views';
 
 $cnf['session']['autostart'] = true;
-$cnf['session']['type'] = 'database'; //native, database
-$cnf['session']['name'] = '_sess3';
+$cnf['session']['type'] = 'native'; //native, database
+$cnf['session']['name'] = '_sess';
 $cnf['session']['lifetime'] = 3600;
 $cnf['session']['path'] = '/';
 $cnf['session']['domain'] = '';

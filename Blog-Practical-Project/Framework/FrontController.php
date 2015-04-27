@@ -1,6 +1,7 @@
 <?php
 namespace GFramework;
 
+use GFramework\InputData;
 use GFramework\Routers\iRouter;
 
 class FrontController
@@ -10,6 +11,9 @@ class FrontController
     private $controller = null;
     private $method = null;
     private $params = array();
+    /**
+     * @var \GFramework\Routers\iRouter
+     */
     private $router = null;
 
     private function __construct()
@@ -56,6 +60,7 @@ class FrontController
             throw new \Exception('Default route missing', 500);
         }
 
+        $input = InputData::getInstance();
         $params = explode('/', $uri);
         if ($params[0]) {
             $this->controller = strtolower($params[0]);
@@ -63,6 +68,7 @@ class FrontController
                 $this->method = strtolower($params[1]);
                 unset($params[0], $params[1]);
                 $this->params = array_values($params);
+                $input->setGet($this->params);
             } else {
                 $this->method = $this->getDefaultMethod();
             }
@@ -81,9 +87,10 @@ class FrontController
             }
         }
 
+        $input->setPost($this->router->getPost());
         $this->controller = ucfirst($this->controller);
         $controllerFile = "{$this->namespace}\\{$this->controller}";
-//        echo $this->namespace . '<br>' . $this->controller . '<br>' . $this->method;
+
         //TODO
         $controllerObj = new $controllerFile();
         $controllerObj->{$this->method}();

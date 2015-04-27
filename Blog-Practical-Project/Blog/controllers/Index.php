@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tzvetan
- * Date: 15-4-22
- * Time: 15:11
- */
-
 namespace Controllers;
 
 use GFramework\App;
@@ -13,22 +6,8 @@ use GFramework\Validation;
 use GFramework\ValidationRules;
 use GFramework\View;
 
-class Index {
+class Index extends BaseController {
     public function index(){
-        $view = View::getInstance();
-
-        $view->username = 'Ceco';
-        $view->display('admin.index');
-
-        $validator = new Validation();
-
-        $mail = 'ceco@na.f';
-
-        $validator
-            ->setRules(ValidationRules::EMAIL, $mail )
-            ->setRules(ValidationRules::MAX_LENGTH, $mail, 10)
-            ->validate();
-
-        var_dump($validator->getErrors());
+        $this->view->display('layouts.index');
     }
 } 

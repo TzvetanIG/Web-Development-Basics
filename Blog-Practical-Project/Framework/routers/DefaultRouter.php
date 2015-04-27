@@ -13,4 +13,9 @@ class DefaultRouter implements iRouter
         $uri = substr($_SERVER['PHP_SELF'], strlen($_SERVER['SCRIPT_NAME']) + 1);
         return $uri;
     }
+
+    public function getPost()
+    {
+        return $_POST;
+    }
 }
