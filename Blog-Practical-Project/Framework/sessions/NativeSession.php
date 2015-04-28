@@ -40,4 +40,9 @@ class NativeSession implements iSession
     {
         $_SESSION[$name] = $value;
     }
+
+    public function unsetSessionProperty($name)
+    {
+        unset($_SESSION[$name]);
+    }
 }

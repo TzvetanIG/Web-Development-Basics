@@ -2,6 +2,9 @@
 $cnf['default_controller'] =  'Index';
 $cnf['default_method'] =  'index';
 $cnf['namespaces']['Controllers'] = 'D:\SoftUni\Web-Development-Basics\Blog-Practical-Project\Blog\controllers';
+$cnf['namespaces']['Models'] = 'D:\SoftUni\Web-Development-Basics\Blog-Practical-Project\Blog\models';
+$cnf['namespaces']['Constants'] = 'D:\SoftUni\Web-Development-Basics\Blog-Practical-Project\Blog\constants';
+$cnf['namespaces']['Views'] = 'D:\SoftUni\Web-Development-Basics\Blog-Practical-Project\Blog\views';
 
 $cnf['viewsDirectory'] = 'D:\SoftUni\Web-Development-Basics\Blog-Practical-Project\Blog\views';
 

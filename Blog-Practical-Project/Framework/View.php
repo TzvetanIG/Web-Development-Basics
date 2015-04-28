@@ -2,6 +2,7 @@
 
 namespace GFramework;
 
+use GFramework\Sessions\iSession;
 
 class View
 {
@@ -12,10 +13,14 @@ class View
     private $___extension = '.php';
     private $___layoutData = array();
     private $___layoutParts = array();
-
+    /**
+     * @var iSession
+     */
+    private $___session;
 
     private function __construct()
     {
+        $this->___session =  App::getInstance()->getSession();
         $this->___viewPath = App::getInstance()->getConfig()->app['viewsDirectory'];
         if ($this->___viewPath == null) {
             $this->___viewPath = realpath('../views');

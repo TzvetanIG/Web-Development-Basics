@@ -65,11 +65,11 @@ class SimpleDb
     }
 
     public function fetchAllNum() {
-        return $this->statement->fetchAll(\PDO::FETCH_FUNC);
+        return $this->statement->fetchAll(\PDO::FETCH_NUM);
     }
 
     public function fetchRowNum() {
-        return $this->statement->fetch(\PDO::FETCH_FUNC);
+        return $this->statement->fetch(\PDO::FETCH_NUM);
     }
 
     public function fetchAllObj() {
