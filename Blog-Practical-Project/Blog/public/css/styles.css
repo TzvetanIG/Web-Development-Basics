@@ -1,6 +1,12 @@
 header {
     font-size: 3rem;
     text-align: center;
+    color: #3E3F3A;
+}
+
+.header, .header:hover {
+    color: #3E3F3A;
+    text-decoration: none;
 }
 
 form .form-group label.control-label {
@@ -27,11 +33,40 @@ form .form-group label.control-label {
     left: 0;
 }
 
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.categories-box {
+    height: 25rem;
+    overflow-y: scroll;
+}
+
+textarea {
+    resize: none;
+}
+
 .categories {
-    background: #fff;
-    border-style: solid;
-    border-color: #DFD7CA;
-    border-width: 0 1px 1px 1px;
-    padding: 5px;
-    z-index: 100;
+    list-style-type: none;
+}
+
+.categories li a{
+    padding: 0;
+    color: #000;
+}
+
+.problem {
+    border: solid #3E3F3A;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    margin: 5px;
+}
+
+.problem .condition {
+    background: #F8F5F0;
+    padding: 3px;
+}
+
+.padding8 {
+    padding: 8px;
 }

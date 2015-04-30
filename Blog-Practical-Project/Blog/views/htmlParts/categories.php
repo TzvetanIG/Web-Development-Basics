@@ -1,32 +1,44 @@
-<div  class="col-md-10 col-md-offset-1">
-
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class=""><a href="#grade4" aria-controls="home" role="tab" data-toggle="tab">4 клас</a></li>
-        <li role="presentation"><a href="#grade5" aria-controls="profile" role="tab" data-toggle="tab">5 клас</a></li>
-        <li role="presentation"><a href="#grade6" aria-controls="messages" role="tab" data-toggle="tab">6 клас</a></li>
-        <li role="presentation"><a href="#grade7" aria-controls="settings" role="tab" data-toggle="tab">7 клас</a></li>
-        <li role="presentation"><a href="#grade8" aria-controls="settings" role="tab" data-toggle="tab">8 клас</a></li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content parent">
-        <div role="tabpanel" class="tab-pane child categories" id="grade4">
-            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane child categories" id="grade5">
-            <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane child categories" id="grade6">
-            <p>Etsy mixtape wayfarers.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane child categories" id="grade7">
-            <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
-        </div>
-        <div role="tabpanel" class="tab-pane child categories" id="grade8">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda consectetur eligendi fugiat magni modi necessitatibus numquam odit pariatur rerum! Ea in libero nam officiis perferendis quia quisquam, sequi veritatis. Aspernatur. Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+<div class="container-fluid">
+    <div class="row  margin-bottom-5">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="row container-fluid">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="/" class="btn btn-lg">Всички класове</a>
+                    </li>
+                    <li>
+                        <a href="/categories/grade/4" class="btn btn-lg">4 клас</a>
+                    </li>
+                    <li>
+                        <a href="/categories/grade/5" class="btn btn-lg">5 клас </a>
+                    </li>
+                    <li>
+                        <a  href="/categories/grade/6"class="btn btn-lg">6 клас</a>
+                    </li>
+                    <li>
+                        <a  href="/categories/grade/7"class="btn btn-lg">7 клас</a>
+                    </li>
+                    <li>
+                        <a href="/categories/grade/8" class="btn btn-lg">8 клас</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="panel panel-default col-md-8 col-md-offset-2 categories-box">
+            <div class="panel-body">
+                <div class="row">
+                    <a href="/problems/all/<?= $this->___data['grade'] ?>" class="btn btn-info">Всички задачи</a>
+                </div>
+                <ul class="categories">
+                    <?php foreach($this->___data['categories'] as $category) : ?>
+                    <li>
+                        <a href="/problems/category/<?= $category.'/'.$this->___data['grade']  ?>" ><?= $category ?></a>
+                    </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-

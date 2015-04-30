@@ -2,7 +2,7 @@
 <?= $this->getLayoutData('header'); ?>
 <?= $this->getLayoutData('menu'); ?>
     <div class="container">
-        <?php if(isset($this->___data['error'])){
+        <?php if(isset($this->___data['errors'])){
            echo $this->getLayoutData('errors');
         } ?>
 
@@ -16,7 +16,7 @@
 
                             <div class="col-md-12">
                                 <input name="username" class="form-control" id="inputUsername" placeholder="Потребителско име"
-                                       type="text">
+                                       type="text" value="<?= $this->___data['username'] ?>">
                             </div>
                         </div>
 
@@ -24,7 +24,8 @@
                             <label for="inputEmail" class="col-md-10 control-label">Email</label>
 
                             <div class="col-md-12">
-                                <input name="email" class="form-control" id="inputEmail" placeholder="Email" type="email">
+                                <input name="email" class="form-control" id="inputEmail" placeholder="Email" type="email"
+                                       value="<?= $this->___data['email'] ?>">
                             </div>
                         </div>
 
@@ -46,8 +47,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <a href="/" type="reset" class="btn btn-default">Cancel</a>
-                                <button name="submit" type="submit" class="btn btn-primary">Register</button>
+                                <button name="submit" type="submit" class="btn btn-primary">Регистрация</button>
                             </div>
                         </div>
                     </fieldset>

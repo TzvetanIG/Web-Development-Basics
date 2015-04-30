@@ -22,8 +22,8 @@ final class Loader
             if(strpos($class, $key) === 0){
                 $file = str_replace('\\', DIRECTORY_SEPARATOR, $class);
                 $file = substr_replace($file, $value, 0, strlen($key)) . '.php';
-                $file = realpath($file);
-                if($file && is_readable($file)){
+                $fileName = realpath($file);
+                if($fileName && is_readable($fileName)){
                     include $file;
                 } else {
                     throw new \Exception('File not be included: ' . $file);

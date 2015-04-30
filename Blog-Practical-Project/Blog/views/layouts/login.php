@@ -2,7 +2,7 @@
 <?= $this->getLayoutData('header'); ?>
 <?= $this->getLayoutData('menu'); ?>
     <div class="container">
-        <?php if(isset($this->___data['error'])){
+        <?php if(isset($this->___data['errors'])){
             echo $this->getLayoutData('errors');
         } ?>
 

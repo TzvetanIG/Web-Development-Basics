@@ -8,11 +8,12 @@ use GFramework\View;
 use GFramework\Sessions\iSession;
 use GFramework\Config;
 
-abstract class  BaseController {
+abstract class  BaseController
+{
     /**
      * @var \GFramework\App
      */
-    protected  $app;
+    protected $app;
     /**
      * @var View
      */
@@ -29,8 +30,10 @@ abstract class  BaseController {
      * @var iSession
      */
     protected $session;
+    protected $viewData = array();
 
-    function __construct() {
+    function __construct()
+    {
         $this->app = App::getInstance();
         $this->view = View::getInstance();
         $this->config = $this->app->getConfig();
@@ -43,10 +46,12 @@ abstract class  BaseController {
         $this->view->appendLayout('errors', 'htmlParts.errorsMessages');
         $this->view->appendLayout('menu', 'htmlParts.menu');
         $this->view->appendLayout('categories', 'htmlParts.categories');
+        $this->view->appendLayout('problem', 'htmlParts.problem');
     }
 
-    protected function redirect($url) {
-        if($url){
+    protected function redirect($url)
+    {
+        if ($url) {
             header("Location: $url");
             die;
         } else {
@@ -55,9 +60,10 @@ abstract class  BaseController {
         }
     }
 
-    protected function redirectWhenUserIsNotLogged($url) {
-        if(!$this->session->username){
-            if($url){
+    protected function redirectWhenUserIsNotLogged($url)
+    {
+        if (!$this->session->username) {
+            if ($url) {
                 header("Location: $url");
                 die;
             } else {
@@ -67,9 +73,10 @@ abstract class  BaseController {
         }
     }
 
-    protected function redirectWhenUserIsLogged($url) {
-        if($this->session->username){
-            if($url){
+    protected function redirectWhenUserIsLogged($url)
+    {
+        if ($this->session->username) {
+            if ($url) {
                 header("Location: $url");
                 die;
             } else {
@@ -77,5 +84,13 @@ abstract class  BaseController {
                 throw new \Exception('Invalid url', 500);
             }
         }
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function addViewData($data)
+    {
+        $this->viewData = array_merge($this->viewData, $data);
     }
 } 

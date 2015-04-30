@@ -4,7 +4,7 @@ namespace GFramework;
 class Validation
 {
     private $rules = array();
-    private $error;
+    private $errors;
 
     public function setRules($rule, $value, $params = null, $name = null) {
         $this->rules[] = array('value' => $value, 'rule' => $rule, 'params' => $params, 'name' => $name);
@@ -12,7 +12,7 @@ class Validation
     }
 
     public  function validate() {
-        $this->error  = array();
+        $this->errors  = array();
         if(count($this->rules) > 0){
            foreach($this->rules as $v) {
                if(!$this->$v['rule']($v['value'], $v['params'])){
@@ -103,7 +103,7 @@ class Validation
     public static function emails($val1) {
         if (is_array($val1)) {
             foreach ($val1 as $v) {
-                if (!self::email($val1)) {
+                if (!self::isEmail($val1)) {
                     return false;
                 }
             }

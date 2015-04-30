@@ -3,8 +3,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <?php if($this->___session->username) { ?>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Добави задача</a></li>
-                    <li class="active"><a href="/">Качени задачи</a></li>
+                    <li class="active"><a href="/problems/add">Добави задача</a></li>
+                    <li class="active"><a href="/users/problems">Качени задачи</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown"  data-dropdown="dropdown">

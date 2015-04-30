@@ -1,3 +1,2 @@
-<header>Сборник по математика</header>
-<hr>
+<header><a href="/" class="header">Сборник по математика</a></header>
 
