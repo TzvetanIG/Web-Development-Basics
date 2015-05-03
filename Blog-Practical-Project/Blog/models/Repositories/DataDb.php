@@ -8,6 +8,7 @@
 
 namespace Models\Repositories;
 
+use GFramework\App;
 use GFramework\DB\SimpleDb;
 
 class DataDb {
@@ -15,9 +16,11 @@ class DataDb {
      * @var SimpleDb
      */
     protected  $db;
+    protected $pageSize;
 
     public function __construct()
     {
         $this->db = new SimpleDb();
+        $this->pageSize = App::getInstance()->getConfig()->app['pageSize'];
     }
 } 

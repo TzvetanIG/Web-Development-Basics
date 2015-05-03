@@ -30,7 +30,6 @@
 
                          <div class="form-group">
                             <div class="col-md-12">
-                                <a href="/" type="reset" class="btn btn-default">Cancel</a>
                                 <button name="submit" type="submit" class="btn btn-primary">Вход</button>
                             </div>
                         </div>

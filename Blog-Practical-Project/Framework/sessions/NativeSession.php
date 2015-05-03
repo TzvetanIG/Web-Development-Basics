@@ -45,4 +45,9 @@ class NativeSession implements iSession
     {
         unset($_SESSION[$name]);
     }
+
+    public function hasSessionProperty($key)
+    {
+        return isset($_SESSION[$key]);
+    }
 }

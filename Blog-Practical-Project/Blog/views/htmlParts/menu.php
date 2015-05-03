@@ -3,6 +3,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <?php if($this->___session->username) { ?>
                 <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Начало</a></li>
                     <li class="active"><a href="/problems/add">Добави задача</a></li>
                     <li class="active"><a href="/users/problems">Качени задачи</a></li>
                 </ul>
@@ -20,6 +21,9 @@
 
                 </ul>
             <?php } else { ?>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Начало</a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/users/registration">Регистрация</a></li>
                     <li><a href="/users/login">Вход</a></li>

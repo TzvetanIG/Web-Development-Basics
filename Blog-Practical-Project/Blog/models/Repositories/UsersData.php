@@ -39,7 +39,7 @@ class UsersData extends DataDb
      */
     public function getUser($user)
     {
-        $result = $this->db->prepare("SELECT id, username, email, password  FROM users WHERE username = ?", array($user->username))
+        $result = $this->db->prepare("SELECT id, username, email, password, is_admin FROM users WHERE username = ?", array($user->username))
             ->execute()
             ->fetchRowAssoc();
         if($result){

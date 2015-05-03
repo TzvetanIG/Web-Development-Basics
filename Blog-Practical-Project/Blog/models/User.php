@@ -11,6 +11,7 @@ class User extends BaseModel
     public $password;
     public $confirmPassword;
     public $email;
+    public $isAdmin = 0;
 
     public function __construct($user = array())
     {
@@ -22,6 +23,7 @@ class User extends BaseModel
             $this->password = $user['password'];
             $this->confirmPassword = $user['confirmPassword'];
             $this->email = $user['email'];
+            $this->isAdmin = $user['is_admin'];
         } else {
             //TODO
             throw new \Exception("Invalid user's data'");

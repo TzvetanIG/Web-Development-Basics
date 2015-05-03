@@ -67,6 +67,18 @@ textarea {
     padding: 3px;
 }
 
+.italic {
+    font-style: italic;
+}
+
 .padding8 {
     padding: 8px;
+}
+
+.problem input[type=checkbox] {
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    margin-right: 2rem;
 }

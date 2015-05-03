@@ -40,8 +40,8 @@ class Users extends BaseController{
                 if(is_array($errors)){
                     $this->addViewData($errors);
                 } else {
-                    $this->setUserSession();
-                    $this->redirect("/users/login");
+                    $this->setUserSession($this->user);
+                    $this->redirect("/");
                 }
             } else {
                 $errors = array('errors' => $this->user->validator->getErrors());
@@ -75,21 +75,31 @@ class Users extends BaseController{
 
     public function problems()
     {
+        $this->redirectWhenUserIsNotLogged('/');
+
+        $page = $this->viewData['page'];
         $userId = $this->session->userId;
-        $problems = Data::problems()->getProblemsByUser($userId);
-        $this->view->display('layouts.problems-page', $problems);
+        $problems = Data::problems()->getProblemsByUser($userId, $page);
+
+        $this->addViewData(array('maxPage' => $this->getMaxPage($problems['maxCount'])));
+        unset($problems['maxCount']);
+        $this->addViewData(array('problems' => $problems));
+
+        $this->view->display('layouts.problems-page', $this->viewData);
     }
 
     private function setUserSession($user){
         $this->session->username = $user->username;
         $this->session->email = $user->email;
         $this->session->userId = $user->id;
+        $this->session->isAdmin = (bool) $user->isAdmin;
     }
 
     private function unsetUserSession(){
         $this->session->unsetSessionProperty('username');
         $this->session->unsetSessionProperty('email');
         $this->session->unsetSessionProperty('id');
+        $this->session->unsetSessionProperty('isAdmin');
     }
 
 

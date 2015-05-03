@@ -3,10 +3,10 @@ namespace Controllers;
 
 use GFramework\App;
 use GFramework\InputData;
-use GFramework\Validation;
 use GFramework\View;
 use GFramework\Sessions\iSession;
 use GFramework\Config;
+use Models\Repositories\Data;
 
 abstract class  BaseController
 {
@@ -40,6 +40,11 @@ abstract class  BaseController
         $this->session = $this->app->getSession();
         $this->input = InputData::getInstance();
 
+        $page = $this->readPageNumber();
+        $this->viewData  = array(
+            'page' => $page,
+        );
+
         $this->view->appendLayout('startPage', 'htmlParts.startHTML');
         $this->view->appendLayout('endPage', 'htmlParts.endHTML');
         $this->view->appendLayout('header', 'htmlParts.header');
@@ -47,6 +52,13 @@ abstract class  BaseController
         $this->view->appendLayout('menu', 'htmlParts.menu');
         $this->view->appendLayout('categories', 'htmlParts.categories');
         $this->view->appendLayout('problem', 'htmlParts.problem');
+        $this->view->appendLayout('pagination', 'htmlParts.pagination');
+        $this->view->appendLayout('problem-form', 'htmlParts.problem-form');
+        $this->view->appendLayout('problem-solution', 'htmlParts.problem-solution');
+
+        if (!$this->session->hasSessionProperty('refererPage')) {
+            $this->session->refererPage = $_SERVER['HTTP_REFERER'];
+        }
     }
 
     protected function redirect($url)
@@ -93,4 +105,32 @@ abstract class  BaseController
     {
         $this->viewData = array_merge($this->viewData, $data);
     }
-} 
+
+    private function readPageNumber()
+    {
+        $id = 0;
+        $page = 1;
+        $param = true;
+        while ($param) {
+            $param = $this->input->get($id);
+            if ($param == 'page') {
+                $page = $this->input->get($id + 1);
+                break;
+            }
+
+            $id++;
+        }
+
+        return $page;
+    }
+
+    public function getMaxPage($count){
+        $pageSize = $this->config->app['pageSize'];
+        $maxPage = (int)($count / $pageSize);
+        if (($count % $pageSize) > 0) {
+            $maxPage++;
+        }
+
+        return $maxPage;
+    }
+}

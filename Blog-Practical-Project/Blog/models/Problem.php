@@ -6,9 +6,11 @@ use Constants\Codes;
 
 class Problem extends BaseModel
 {
+    public $id;
     public  $grade;
     public  $categories = array();
     public  $condition;
+    public $solution;
 
     public function __construct($problem) {
         parent::__construct();
@@ -17,6 +19,9 @@ class Problem extends BaseModel
             $this->grade = $problem['grade'];
             $this->categories = array_map(trim, array_filter(explode(',', $problem['categories'])));
             $this->condition = $problem['condition'];
+            if(isset($problem['solution'])){
+                $this->solution = $problem['solution'];
+            }
         } else {
             //TODO
             throw new \Exception("Invalid problem's data'");

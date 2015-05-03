@@ -79,4 +79,10 @@ class CategoriesData extends DataDb
 
         return $categories;
     }
+
+    public function deleteCategoriesOfProblem($problemId) {
+        $this->db
+            ->prepare("DELETE FROM `tasks_categories` WHERE `task_id` = ?")
+            ->execute(array($problemId));
+    }
 } 

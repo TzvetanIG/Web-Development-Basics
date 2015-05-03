@@ -24,6 +24,8 @@ class SimpleDb
         } else {
             $this->db = App::getInstance()->getDbConnection($this->connection);
         }
+
+        $this->db->setAttribute( \PDO::ATTR_EMULATE_PREPARES, false );
     }
 
     /**
@@ -52,6 +54,18 @@ class SimpleDb
         }
 
         $this->statement->execute($this->params);
+        return $this;
+    }
+
+    /**
+     * @param $param
+     * @param $value
+     * @param $pdoType
+     * @return $this
+     */
+    public function bindValue($param, $value, $pdoType)
+    {
+        $this->statement->bindValue($param, $value, $pdoType);
         return $this;
     }
 

@@ -18,4 +18,6 @@ $cnf['session']['secure'] = false;
 $cnf['session']['dbConnection'] = 'session';
 $cnf['session']['dbTable'] = 'sessions';
 
+$cnf['pageSize'] = 5;
+
 return $cnf;
