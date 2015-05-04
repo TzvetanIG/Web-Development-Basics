@@ -5,8 +5,8 @@
             <?php if(\GFramework\App::getInstance()->getSession()->isAdmin): ?>
             <div class="row padding8">
                 <div class="col-md-2">
-                    <label>
-                        <input id="<?= $problem['id'] ?>" type="checkbox" <?= \Constants\Tools::checked($problem['is_visible']) ?>> Покажи задачата
+                    <label name="visibility" id="<?= $problem['id'] ?>">
+                        <input disabled type="checkbox" <?= \Constants\Tools::checked($problem['is_visible']) ?>> Покажи задачата
                     </label>
                 </div>
                 <div class="col-md-10 text-right">
@@ -36,7 +36,12 @@
                 </div>
             </div>
             <div class="row padding8 italic">
-                <div class="col-md-11 col-md-offset-1 right">Публикувана на: <?= $problem['publish_date'] ?></div>
+                <div class="col-md-1 col-md-offset-1 right">
+                    <?php if($problem['solution'] && !isset($this->___data['hide'])) : ?>
+                        <a href="/problems/solution/<?= $problem['id'] ?>" class="btn btn-primary btn-sm">Решение</a>
+                    <?php endif ?>
+                </div>
+                <div class="col-md-10 text-right">Публикувана на: <?= $problem['publish_date'] ?></div>
             </div>
         </div>
     </div>

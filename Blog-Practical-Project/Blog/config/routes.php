@@ -11,8 +11,10 @@ $cnf['admin']['namespace'] = 'Controllers';
 //$cnf['administration']['controllers']['new']['newName'] = 'create';
 //
 //$cnf['*']['controllers']['index']['methods']['delete'] = 'deleteById';
+$cnf['*']['controllers']['user']['newName'] = 'users';
 
 $cnf['*']['controllers']['problems']['methods']['all'] = 'category';
+$cnf['*']['controllers']['problems']['methods']['toggle-visibility'] = 'toggleVisibility';
 
 $cnf['*']['namespace'] = 'Controllers';
 

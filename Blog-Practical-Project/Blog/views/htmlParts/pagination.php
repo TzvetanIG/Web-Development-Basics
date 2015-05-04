@@ -7,7 +7,7 @@ $nextPage = ($page + 1) > 1 ? $maxPage : $page + 1;
 ?>
 <?php if($this->___data['maxPage']) : ?>
 <div class="container  text-center">
-    <ul class="pagination pagination-lg">
+    <ul class="pagination">
         <li><a href="<?= $url . $previousPage ?>">«</a></li>
         <?php for ($i = 1; $i <= $maxPage; $i++): ?>
             <li class="<?= Constants\Tools::active($page, $i) ?>"><a href="<?= $url . $i ?>"><?= $i ?></a></li>

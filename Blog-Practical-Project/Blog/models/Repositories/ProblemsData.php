@@ -19,7 +19,7 @@ class ProblemsData extends DataDb
             throw new \Exception('User is not logged', 500);
         }
 
-        $publishDate = date('Y-m-d');
+        $publishDate = date('Y-m-d G:i:s');
         $this->db->prepare('INSERT INTO tasks (`class`, `condition`, `publish_date`, `user_id`) VALUES (?, ?, ?, ?)')
             ->execute(array($problem->grade, $problem->condition, $publishDate, $userId));
 
@@ -51,7 +51,7 @@ class ProblemsData extends DataDb
             $isVisible = 1;
         }
 
-        $statement = $this->db->prepare("SELECT id, `condition`, class, publish_date, is_visible
+        $statement = $this->db->prepare("SELECT id, `condition`, class, publish_date, is_visible, solution
                 FROM tasks
                 $supplement
                 ORDER BY publish_date DESC, id DESC
@@ -78,7 +78,7 @@ class ProblemsData extends DataDb
             $isVisible = 1;
         }
 
-        $statement = $this->db->prepare("SELECT id, `condition`, class, publish_date, is_visible
+        $statement = $this->db->prepare("SELECT id, `condition`, class, publish_date, is_visible, solution
                 FROM tasks WHERE class = ? $supplement
                 ORDER BY publish_date DESC, id DESC
                 LIMIT ?, ?");
@@ -105,7 +105,7 @@ class ProblemsData extends DataDb
             $isVisible = 1;
         }
 
-        $statement = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date, is_visible
+        $statement = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date, is_visible, solution
                 FROM tasks t
 	              JOIN tasks_categories tc on tc.task_id = t.id
 	              JOIN categories c ON c.id = tc.category_id
@@ -135,7 +135,7 @@ class ProblemsData extends DataDb
             $isVisible = 1;
         }
 
-        $statement = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date , is_visible
+        $statement = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date , is_visible, solution
                 FROM tasks t
 	              JOIN tasks_categories tc on tc.task_id = t.id
 	              JOIN categories c ON c.id = tc.category_id
@@ -160,8 +160,8 @@ class ProblemsData extends DataDb
     {
         $problems = $this->db
             ->prepare("SELECT id, `condition`, class, publish_date, solution
-                                        FROM tasks
-                                        WHERE id = ?")
+                        FROM tasks
+                        WHERE id = ?")
             ->execute(array($id))
             ->fetchAllAssoc();
 
@@ -250,6 +250,19 @@ class ProblemsData extends DataDb
     public function delete($problemId) {
         $this->db->prepare("DELETE FROM tasks WHERE id = ?")
             ->execute(array($problemId));
+    }
+
+    public function toggleVisibility($problemId)
+    {
+        $visibility = (bool) $this->db->prepare("SELECT is_visible FROM tasks WHERE id = ?")
+            ->execute(array($problemId))
+            ->fetchRowNum()[0];
+        $visibility = (int) !$visibility;
+
+        $this->db->prepare("UPDATE tasks
+                SET is_visible = ?
+                WHERE id = ?")
+            ->execute(array($visibility, $problemId));
     }
 
     private function addCategoriesToProblems($problems)

@@ -15,9 +15,9 @@ class Problems extends BaseController
 
         $problem = array(
             'grade' => $this->input->post('grade', 'int'),
-            'categories' => $this->input->post('categories'),
-            'condition' => trim($this->input->post('condition')),
-            'solution' => $this->input->post('solution')
+            'categories' => $this->input->post('categories', 'xss'),
+            'condition' => trim($this->input->post('condition', 'xss')),
+            'solution' => $this->input->post('solution', 'xss')
         );
 
         $this->addViewData($problem);
@@ -27,9 +27,10 @@ class Problems extends BaseController
         }
     }
 
+
     public function add()
     {
-        $this->redirectWhenUserIsNotLogged('/');
+        $this->redirectWhenUserIsNotLogged('/user/login');
         if ($this->problem != null) {
             if ($this->problem->validateProblemData()) {
                 $problemId = Data::problems()->addProblem($this->problem);
@@ -47,6 +48,7 @@ class Problems extends BaseController
         $this->view->display('layouts.add-problem-form', $this->viewData);
     }
 
+
     public function category()
     {
         $category = $this->input->get(0, 'string', 'all');
@@ -54,17 +56,20 @@ class Problems extends BaseController
         $page = $this->viewData['page'];
         $isShowAll = $this->session->isAdmin;
 
+
         if ($category == 'all') {
+            $this->saveHistoryPath(1, 'Всички категории');
             if ($grade == 'all') {
                 $problems = Data::problems()->getAllProblems($page, $isShowAll);
             } else {
                 $problems = Data::problems()->getProblemsByGrade($grade, $page, $isShowAll);
             }
         } else {
+            $this->saveHistoryPath(1, $category);
             if ($grade == 'all') {
                 $problems = Data::problems()->getProblemsByCategory($category, $page, $isShowAll);
             } else {
-                $problems = Data::problems()->getProblemsByGradeAndCategory($grade, $category, $page, $isShowAll);
+                 $problems = Data::problems()->getProblemsByGradeAndCategory($grade, $category, $page, $isShowAll);
             }
         }
 
@@ -78,10 +83,8 @@ class Problems extends BaseController
 
     public function edit()
     {
-        $problemId = $this->input->get(0, 'int');
-        if (!$problemId || !$this->session->isAdmin) {
-            $this->redirect('/');
-        }
+        $this->redirectWhenUserIsNotLogged('/user/login');
+        $problemId = $this->getProblemId();
 
         if ($this->problem != null) {
             $this->problem->id = $problemId;
@@ -109,15 +112,14 @@ class Problems extends BaseController
 
     public function delete()
     {
-        $problemId = $this->input->get(0, 'int');
-        if (!$problemId || !$this->session->isAdmin) {
-            $this->redirect($this->session->refererPage);
-        }
+        $this->redirectWhenUserIsNotLogged('/user/login');
+        $problemId = $this->getProblemId();
 
         if ($this->input->hasPost('delete') || $this->input->hasPost('cancel')) {
 
             if ($this->input->hasPost('delete')) {
                 Data::problems()->delete($problemId);
+                Data::categories()->deleteEmptyCategories();
             }
 
             $this->redirect($this->session->refererPage);
@@ -126,5 +128,47 @@ class Problems extends BaseController
 
         $data = array('id' => $problemId);
         $this->view->display('layouts.confirm-delete-form', $data);
+    }
+
+
+    public function solution(){
+        $this->redirectWhenUserIsNotLogged('/user/login');
+
+        $problemId = $this->input->get(0, 'int');
+        $this->saveHistoryPath(2, 'Задача ' . $problemId);
+        if (!$problemId) {
+            $this->redirect($this->session->refererPage);
+            $this->session->unsetSessionProperty('refererPage');
+        }
+
+        $problem = Data::problems()->getProblemById($problemId);
+
+        $data = array('0' => $problem);
+        $data = array(
+            'problems' => $data,
+            'hide' => 1
+        );
+
+        $this->view->display('layouts.problem-with-solution', $data);
+    }
+
+
+    public function toggleVisibility(){
+        $problemId = $this->input->get(0, 'int');
+        if ($problemId && $this->session->isAdmin) {
+            Data::problems()->toggleVisibility($problemId);
+        } else {
+            throw new \Exception("Invalid id or you not admin", 500);
+        }
+    }
+
+    private function getProblemId(){
+        $problemId = $this->input->get(0, 'int');
+        if (!$problemId || !$this->session->isAdmin) {
+            $this->redirect($this->session->refererPage);
+            $this->session->unsetSessionProperty('refererPage');
+        }
+
+        return $problemId;
     }
 }

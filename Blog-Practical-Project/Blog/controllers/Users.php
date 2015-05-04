@@ -32,6 +32,7 @@ class Users extends BaseController{
         }
     }
 
+    // "/user/registration"
     public function registration() {
         $this->redirectWhenUserIsLogged('/');
         if($this->user != null) {
@@ -52,6 +53,8 @@ class Users extends BaseController{
         $this->view->display('layouts.registration', $this->viewData);
     }
 
+
+    // "/user/login"
     public function login() {
         $this->redirectWhenUserIsLogged('/');
         if($this->user != null) {
@@ -68,14 +71,19 @@ class Users extends BaseController{
         $this->view->display('layouts.login', $this->viewData);
     }
 
+
+    // "/user/logout"
     public function logout(){
         $this->unsetUserSession();
         $this->redirectWhenUserIsNotLogged($_SERVER['HTTP_REFERER']);
     }
 
+
+    //// "/user/problems"
     public function problems()
     {
         $this->redirectWhenUserIsNotLogged('/');
+        $this->saveHistoryPath(2, 'Качени задачи');
 
         $page = $this->viewData['page'];
         $userId = $this->session->userId;
@@ -88,6 +96,7 @@ class Users extends BaseController{
         $this->view->display('layouts.problems-page', $this->viewData);
     }
 
+
     private function setUserSession($user){
         $this->session->username = $user->username;
         $this->session->email = $user->email;
@@ -95,12 +104,11 @@ class Users extends BaseController{
         $this->session->isAdmin = (bool) $user->isAdmin;
     }
 
+
     private function unsetUserSession(){
         $this->session->unsetSessionProperty('username');
         $this->session->unsetSessionProperty('email');
         $this->session->unsetSessionProperty('id');
         $this->session->unsetSessionProperty('isAdmin');
     }
-
-
 }

@@ -5,7 +5,7 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">Начало</a></li>
                     <li class="active"><a href="/problems/add">Добави задача</a></li>
-                    <li class="active"><a href="/users/problems">Качени задачи</a></li>
+                    <li class="active"><a href="/user/problems">Качени задачи</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown"  data-dropdown="dropdown">
@@ -14,7 +14,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#">Редактиране на профил</a></li>
-                            <li><a href="/users/logout">Изход</a></li>
+                            <li><a href="/user/logout">Изход</a></li>
                         </ul>
                     </li>
                     </li>
@@ -25,8 +25,8 @@
                     <li class="active"><a href="/">Начало</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/users/registration">Регистрация</a></li>
-                    <li><a href="/users/login">Вход</a></li>
+                    <li><a href="/user/registration">Регистрация</a></li>
+                    <li><a href="/user/login">Вход</a></li>
                 </ul>
             <?php } ?>
         </div>

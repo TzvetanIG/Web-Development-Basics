@@ -85,4 +85,10 @@ class CategoriesData extends DataDb
             ->prepare("DELETE FROM `tasks_categories` WHERE `task_id` = ?")
             ->execute(array($problemId));
     }
+
+    public function deleteEmptyCategories(){
+        $this->db->prepare("DELETE from categories
+                            WHERE id NOT IN (SELECT category_id from tasks_categories)")
+            ->execute();
+    }
 } 

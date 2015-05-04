@@ -54,7 +54,9 @@ abstract class  BaseController
         $this->view->appendLayout('problem', 'htmlParts.problem');
         $this->view->appendLayout('pagination', 'htmlParts.pagination');
         $this->view->appendLayout('problem-form', 'htmlParts.problem-form');
-        $this->view->appendLayout('problem-solution', 'htmlParts.problem-solution');
+        $this->view->appendLayout('problem-solution', 'htmlParts.problem-solution-textarea');
+        $this->view->appendLayout('solution', 'htmlParts.solution');
+        $this->view->appendLayout('history', 'htmlParts.history-path');
 
         if (!$this->session->hasSessionProperty('refererPage')) {
             $this->session->refererPage = $_SERVER['HTTP_REFERER'];
@@ -132,5 +134,18 @@ abstract class  BaseController
         }
 
         return $maxPage;
+    }
+
+    protected function saveHistoryPath($position, $key){
+        if($this->session->hasSessionProperty('history')){
+           $history =  $this->session->history;
+        }
+
+        $history[$position]['key'] = $key;
+        $history[$position]['path'] = $_SERVER['PATH_INFO'];
+        unset($history[$position + 1]);
+        unset($history[$position + 2]);
+
+        $this->session->history = $history;
     }
 }
