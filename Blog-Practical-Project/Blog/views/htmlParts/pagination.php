@@ -12,7 +12,7 @@ $nextPage = ($page + 1) > 1 ? $maxPage : $page + 1;
         <?php for ($i = 1; $i <= $maxPage; $i++): ?>
             <li class="<?= Constants\Tools::active($page, $i) ?>"><a href="<?= $url . $i ?>"><?= $i ?></a></li>
         <?php endfor ?>
-        <li><a href="<?= $nextPage ?>">»</a></li>
+        <li><a href="<?=  $url . $nextPage ?>">»</a></li>
     </ul>
 </div>
 <?php endif ?>
