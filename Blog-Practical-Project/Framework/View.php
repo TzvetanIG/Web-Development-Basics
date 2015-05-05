@@ -47,11 +47,9 @@ class View
             if (is_dir($path) && is_readable($path)) {
                 $this->___viewDir = $path;
             } else {
-                //todo
                 throw new \Exception('Invalid view path', 500);
             }
         } else {
-            //todo
             throw new \Exception('Invalid view path', 500);
         }
     }
@@ -112,7 +110,6 @@ class View
             include $___fullFileName;
             return ob_get_clean();
         } else {
-            //TODO
             throw new \Exception('View ' . $file . ' cannot included', 500);
         }
     }

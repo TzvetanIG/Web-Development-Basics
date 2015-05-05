@@ -6,7 +6,6 @@ use GFramework\InputData;
 use GFramework\View;
 use GFramework\Sessions\iSession;
 use GFramework\Config;
-use Models\Repositories\Data;
 
 abstract class  BaseController
 {
@@ -41,7 +40,7 @@ abstract class  BaseController
         $this->input = InputData::getInstance();
 
         $page = $this->readPageNumber();
-        $this->viewData  = array(
+        $this->viewData = array(
             'page' => $page,
         );
 
@@ -63,16 +62,17 @@ abstract class  BaseController
         }
     }
 
+
     protected function redirect($url)
     {
         if ($url) {
             header("Location: $url");
             die;
         } else {
-            //TODO
             throw new \Exception('Invalid url', 500);
         }
     }
+
 
     protected function redirectWhenUserIsNotLogged($url)
     {
@@ -81,11 +81,11 @@ abstract class  BaseController
                 header("Location: $url");
                 die;
             } else {
-                //TODO
                 throw new \Exception('Invalid url', 500);
             }
         }
     }
+
 
     protected function redirectWhenUserIsLogged($url)
     {
@@ -94,11 +94,11 @@ abstract class  BaseController
                 header("Location: $url");
                 die;
             } else {
-                //TODO
                 throw new \Exception('Invalid url', 500);
             }
         }
     }
+
 
     /**
      * @param array $data
@@ -108,6 +108,10 @@ abstract class  BaseController
         $this->viewData = array_merge($this->viewData, $data);
     }
 
+
+    /**
+     * @return int
+     */
     private function readPageNumber()
     {
         $id = 0;
@@ -123,10 +127,12 @@ abstract class  BaseController
             $id++;
         }
 
-        return $page;
+        return (int) $page;
     }
 
-    public function getMaxPage($count){
+
+    public  function getMaxPage($count)
+    {
         $pageSize = $this->config->app['pageSize'];
         $maxPage = (int)($count / $pageSize);
         if (($count % $pageSize) > 0) {
@@ -136,9 +142,11 @@ abstract class  BaseController
         return $maxPage;
     }
 
-    protected function saveHistoryPath($position, $key){
-        if($this->session->hasSessionProperty('history')){
-           $history =  $this->session->history;
+
+    protected function saveHistoryPath($position, $key)
+    {
+        if ($this->session->hasSessionProperty('history')) {
+            $history = $this->session->history;
         }
 
         $history[$position]['key'] = $key;
@@ -147,5 +155,22 @@ abstract class  BaseController
         unset($history[$position + 2]);
 
         $this->session->history = $history;
+    }
+
+
+    protected function getLastHistoryPath()
+    {
+        $history = $this->session->history;
+        return end($history)['path'];
+    }
+
+    protected function getHistoryPathByPosition($position)
+    {
+        $history = $this->session->history;
+        return $history[$position]['path'];
+    }
+
+    public function __call($name, $arguments) {
+        throw new \Exception("Method $name is not implemented.", 501);
     }
 }

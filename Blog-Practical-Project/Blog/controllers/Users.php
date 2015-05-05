@@ -34,7 +34,8 @@ class Users extends BaseController{
 
     // "/user/registration"
     public function registration() {
-        $this->redirectWhenUserIsLogged('/');
+        $this->redirectWhenUserIsLogged($this->getLastHistoryPath());
+
         if($this->user != null) {
             if($this->user->validateUserData()){
                 $errors = $this->usersData->register($this->user);
@@ -42,7 +43,7 @@ class Users extends BaseController{
                     $this->addViewData($errors);
                 } else {
                     $this->setUserSession($this->user);
-                    $this->redirect("/");
+                    $this->redirect($this->getLastHistoryPath());
                 }
             } else {
                 $errors = array('errors' => $this->user->validator->getErrors());
@@ -56,12 +57,13 @@ class Users extends BaseController{
 
     // "/user/login"
     public function login() {
-        $this->redirectWhenUserIsLogged('/');
+        $this->redirectWhenUserIsLogged($this->getLastHistoryPath());
+
         if($this->user != null) {
             $userDb = $this->usersData->getUser($this->user);
             if($userDb && password_verify($this->input->post('password'), $userDb->password)){
                 $this->setUserSession($userDb);
-                $this->redirect("/");
+                $this->redirect($this->getLastHistoryPath());
             } else {
                 $errors = array('errors' => array(Codes::USERNAME.Codes::PASSWORD.Codes::WRONG));
                 $this->addViewData($errors);
@@ -75,14 +77,14 @@ class Users extends BaseController{
     // "/user/logout"
     public function logout(){
         $this->unsetUserSession();
-        $this->redirectWhenUserIsNotLogged($_SERVER['HTTP_REFERER']);
+        $this->redirectWhenUserIsNotLogged($this->getLastHistoryPath());
     }
 
 
     //// "/user/problems"
     public function problems()
     {
-        $this->redirectWhenUserIsNotLogged('/');
+        $this->redirectWhenUserIsNotLogged($this->getLastHistoryPath());
         $this->saveHistoryPath(2, 'Качени задачи');
 
         $page = $this->viewData['page'];

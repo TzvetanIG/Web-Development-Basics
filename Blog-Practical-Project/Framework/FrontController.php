@@ -48,7 +48,6 @@ class FrontController
                 }
             }
         } else {
-            //TODO
             throw new \Exception('Default route missing', 500);
         }
 
@@ -56,7 +55,6 @@ class FrontController
             $this->namespace = $routesConfig['*']['namespace'];
             $packegeConfig = $routesConfig['*'];
         } else if ($this->namespace == null && !$routesConfig['*']['namespace']) {
-            //TODO
             throw new \Exception('Default route missing', 500);
         }
 
@@ -91,7 +89,6 @@ class FrontController
         $this->controller = ucfirst($this->controller);
         $controllerFile = "{$this->namespace}\\{$this->controller}";
 
-        //TODO
         $controllerObj = new $controllerFile();
         $controllerObj->{$this->method}();
     }

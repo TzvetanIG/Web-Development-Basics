@@ -1,6 +1,7 @@
 <?= $this->getLayoutData('startPage'); ?>
 <?= $this->getLayoutData('header'); ?>
 <?= $this->getLayoutData('menu'); ?>
+<?= $this->getLayoutData('history'); ?>
     <div class="row">
         <div class="col-md-4 col-md-offset-4 table-bordered">
             <form class="form-horizontal col-md-12" method="POST">

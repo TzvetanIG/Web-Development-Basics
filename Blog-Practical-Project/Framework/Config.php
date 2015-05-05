@@ -42,14 +42,12 @@ class Config
                 Loader::registerNamespaces($namespaces);
             }
         } else {
-            //TODO
             throw new \Exception('Config directory read error: ' . $configFolder);
         }
     }
 
     private function includeConfigFile($path) {
         if(!$path) {
-            //TODO
             throw new \Exception;
         }
 
@@ -58,7 +56,6 @@ class Config
             $basename = explode('.php', basename($file))[0];
             $this->configArray[$basename] = include $file;
         } else {
-            //TODO
             throw new \Exception('Config file read error: ' . $path );
         }
     }

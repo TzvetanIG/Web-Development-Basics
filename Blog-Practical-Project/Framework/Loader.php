@@ -38,7 +38,6 @@ final class Loader
         $namespace = trim($namespace);
         if(strlen($namespace) > 0){
             if(!$path){
-                //TODO
                 throw new \Exception( 'Invalid path.');
             }
 
@@ -47,7 +46,6 @@ final class Loader
                 self::$namespaces[$namespace . '\\'] = $realPath . DIRECTORY_SEPARATOR;
             }
         } else {
-            //TODO
             throw new \Exception('Invalid namespace: ' . $namespace .'.');
         }
     }
@@ -58,7 +56,6 @@ final class Loader
                 self::registerNamespace($key, $value);
             }
         } else {
-            //TODO
             throw new \Exception('Invalid namespaces');
         }
     }

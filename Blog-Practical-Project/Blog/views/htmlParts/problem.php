@@ -22,7 +22,6 @@
                     <?php
                         $length = count($problem['categories']);
                         for($i = 0; $i < $length - 1; $i++):
-                            //TODO href category link
                     ?>
                         <a href="/problems/category/<?= $problem['categories'][$i] . '/' . $problem['class']  ?>"><?= $problem['categories'][$i].', ' ?></a>
                     <?php endfor ?>
@@ -32,7 +31,7 @@
             <div class="row">
                 <div class="col-md-1 text-right italic"><?= $problem['class'] ?> клас</div>
                 <div class="col-md-11 condition">
-                    <?= $problem['condition'] ?>
+                    <?= nl2br($problem['condition']) ?>
                 </div>
             </div>
             <div class="row padding8 italic">

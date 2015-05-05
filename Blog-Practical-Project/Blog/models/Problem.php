@@ -23,7 +23,6 @@ class Problem extends BaseModel
                 $this->solution = $problem['solution'];
             }
         } else {
-            //TODO
             throw new \Exception("Invalid problem's data'");
         }
 

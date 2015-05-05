@@ -25,8 +25,7 @@ class User extends BaseModel
             $this->email = $user['email'];
             $this->isAdmin = $user['is_admin'];
         } else {
-            //TODO
-            throw new \Exception("Invalid user's data'");
+            throw new \Exception("Invalid user's data'", 500);
         }
     }
 

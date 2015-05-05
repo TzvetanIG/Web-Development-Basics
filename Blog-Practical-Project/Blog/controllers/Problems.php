@@ -31,6 +31,7 @@ class Problems extends BaseController
     public function add()
     {
         $this->redirectWhenUserIsNotLogged('/user/login');
+        $this->saveHistoryPath(2, 'Добави задача');
         if ($this->problem != null) {
             if ($this->problem->validateProblemData()) {
                 $problemId = Data::problems()->addProblem($this->problem);
@@ -51,7 +52,7 @@ class Problems extends BaseController
 
     public function category()
     {
-        $category = $this->input->get(0, 'string', 'all');
+        $category = $this->input->get(0, 'xss|string', 'all');
         $grade = $this->input->get(1, 'int', 'all');
         $page = $this->viewData['page'];
         $isShowAll = $this->session->isAdmin;
@@ -69,9 +70,10 @@ class Problems extends BaseController
             if ($grade == 'all') {
                 $problems = Data::problems()->getProblemsByCategory($category, $page, $isShowAll);
             } else {
-                 $problems = Data::problems()->getProblemsByGradeAndCategory($grade, $category, $page, $isShowAll);
+                $problems = Data::problems()->getProblemsByGradeAndCategory($grade, $category, $page, $isShowAll);
             }
         }
+
 
         $this->addViewData(array('maxPage' => $this->getMaxPage($problems['maxCount'])));
         unset($problems['maxCount']);
@@ -85,6 +87,7 @@ class Problems extends BaseController
     {
         $this->redirectWhenUserIsNotLogged('/user/login');
         $problemId = $this->getProblemId();
+        $this->saveHistoryPath(2, 'Редактиране на задача ' . $problemId);
 
         if ($this->problem != null) {
             $this->problem->id = $problemId;
@@ -95,11 +98,12 @@ class Problems extends BaseController
                 Data::categories()->addProblemToCategory($categoryId, $problemId);
             }
 
-            $this->redirect('/');
+            $this->redirect($this->getHistoryPathByPosition(1));
         }
 
         $problem = Data::problems()->getProblemById($problemId);
         $data = array(
+            'id' => $problemId,
             'grade' => $problem['class'],
             'categories' => implode(', ', $problem['categories']),
             'condition' => $problem['condition'],
@@ -122,8 +126,7 @@ class Problems extends BaseController
                 Data::categories()->deleteEmptyCategories();
             }
 
-            $this->redirect($this->session->refererPage);
-            $this->session->unsetSessionProperty('refererPage');
+            $this->redirect($this->getLastHistoryPath());
         }
 
         $data = array('id' => $problemId);
@@ -131,14 +134,14 @@ class Problems extends BaseController
     }
 
 
-    public function solution(){
+    public function solution()
+    {
         $this->redirectWhenUserIsNotLogged('/user/login');
 
         $problemId = $this->input->get(0, 'int');
         $this->saveHistoryPath(2, 'Задача ' . $problemId);
         if (!$problemId) {
-            $this->redirect($this->session->refererPage);
-            $this->session->unsetSessionProperty('refererPage');
+            $this->redirect($this->getLastHistoryPath());
         }
 
         $problem = Data::problems()->getProblemById($problemId);
@@ -153,7 +156,8 @@ class Problems extends BaseController
     }
 
 
-    public function toggleVisibility(){
+    public function toggleVisibility()
+    {
         $problemId = $this->input->get(0, 'int');
         if ($problemId && $this->session->isAdmin) {
             Data::problems()->toggleVisibility($problemId);
@@ -162,11 +166,11 @@ class Problems extends BaseController
         }
     }
 
-    private function getProblemId(){
+    private function getProblemId()
+    {
         $problemId = $this->input->get(0, 'int');
         if (!$problemId || !$this->session->isAdmin) {
-            $this->redirect($this->session->refererPage);
-            $this->session->unsetSessionProperty('refererPage');
+            $this->redirect($this->getLastHistoryPath());
         }
 
         return $problemId;

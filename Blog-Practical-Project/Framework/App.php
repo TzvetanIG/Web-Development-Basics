@@ -33,6 +33,7 @@ class App
 
     private function __construct()
     {
+        set_exception_handler(array($this, 'exceptionHandler'));
         Loader::registerNamespace('GFramework', dirname(__FILE__) . DIRECTORY_SEPARATOR);
         Loader::registerAutoLoader();
         $this->config = Config::getInstance();
@@ -87,8 +88,7 @@ class App
                         $session['lifetime'], $session['path'], $session['domain'], $session['secure']);
                     break;
                 default:
-                    //TODO
-                    throw new \Exception('No valid session', 500);
+                     throw new \Exception('No valid session', 500);
                     break;
             }
 
@@ -115,7 +115,6 @@ class App
     public function getDbConnection($connection = 'default')
     {
         if (!$connection) {
-            //TODO
             throw new \Exception('No connection identifier provided', 500);
         }
 
@@ -125,7 +124,6 @@ class App
 
         $config = $this->getConfig()->database[$connection];
         if (!$config) {
-            //TODO
             throw new \Exception('No valid connection identificator is provided', 500);
         }
 
@@ -155,6 +153,27 @@ class App
     public function setRouter($router)
     {
         $this->router = $router;
+    }
+
+    public  function exceptionHandler(\Exception $ex){
+        if($this->config && $this->config->app['displayException'] == true){
+            echo '<pre>' . print_r($ex, true) . '</pre>';
+        } else {
+            $this->displayError($ex->getCode());
+        }
+    }
+
+
+    private function displayError($errorCode)
+    {
+        try{
+            $view = \GFramework\View::getInstance();
+            $view->display($this->config->app['errorView'] , array($errorCode));
+        } catch (\Exception $ex) {
+            Common::headerStatus($errorCode);
+            echo "<h1> $errorCode </h1>";
+            exit;
+        }
     }
 
     public function __destruct()

@@ -47,8 +47,7 @@ class ProblemsData extends DataDb
         if ($isShowAll) {
             $supplement = '';
         } else {
-            $supplement = 'WHERE is_visible = ?';
-            $isVisible = 1;
+            $supplement = 'WHERE is_visible = 1';
         }
 
         $statement = $this->db->prepare("SELECT id, `condition`, class, publish_date, is_visible, solution
@@ -57,15 +56,11 @@ class ProblemsData extends DataDb
                 ORDER BY publish_date DESC, id DESC
                 LIMIT ?, ?");
 
-        if ($isShowAll) {
-            $statement = $statement->execute(array($this->firstElementOfPage($page), $this->pageSize));
-        } else {
-            $statement = $statement->execute(array($isVisible, $this->firstElementOfPage($page), $this->pageSize));
-        }
+        $statement = $statement->execute(array($this->firstElementOfPage($page), $this->pageSize));
 
         $problems = $statement->fetchAllAssoc();
         $problems = $this->addCategoriesToProblems($problems);
-        $problems['maxCount'] = $this->problemsCount($isVisible);
+        $problems['maxCount'] = $this->problemsCount($supplement);
         return $problems;
     }
 
@@ -74,8 +69,7 @@ class ProblemsData extends DataDb
         if ($isShowAll) {
             $supplement = '';
         } else {
-            $supplement = 'AND is_visible = ?';
-            $isVisible = 1;
+            $supplement = 'AND is_visible = 1';
         }
 
         $statement = $this->db->prepare("SELECT id, `condition`, class, publish_date, is_visible, solution
@@ -83,15 +77,11 @@ class ProblemsData extends DataDb
                 ORDER BY publish_date DESC, id DESC
                 LIMIT ?, ?");
 
-        if ($isShowAll) {
-            $statement = $statement->execute(array($grade, $this->firstElementOfPage($page), $this->pageSize));
-        } else {
-            $statement = $statement->execute(array($grade, $isVisible, $this->firstElementOfPage($page), $this->pageSize));
-        }
+        $statement = $statement->execute(array($grade, $this->firstElementOfPage($page), $this->pageSize));
 
         $problems = $statement->fetchAllAssoc();
         $problems = $this->addCategoriesToProblems($problems);
-        $problems['maxCount'] = $this->problemsByGradeCount($grade, $isVisible = true);
+        $problems['maxCount'] = $this->problemsByGradeCount($grade, $supplement);
         return $problems;
     }
 
@@ -101,8 +91,7 @@ class ProblemsData extends DataDb
         if ($isShowAll) {
             $supplement = '';
         } else {
-            $supplement = 'AND is_visible = ?';
-            $isVisible = 1;
+            $supplement = 'AND is_visible = 1';
         }
 
         $statement = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date, is_visible, solution
@@ -113,15 +102,13 @@ class ProblemsData extends DataDb
                 ORDER BY publish_date DESC, id DESC
                 LIMIT ?, ?");
 
-        if ($isShowAll) {
-            $statement = $statement->execute(array($category, $this->firstElementOfPage($page), $this->pageSize));
-        } else {
-            $statement = $statement->execute(array($category, $isVisible, $this->firstElementOfPage($page), $this->pageSize));
-        }
+
+        $statement = $statement->execute(array($category, $this->firstElementOfPage($page), $this->pageSize));
+
 
         $problems = $statement->fetchAllAssoc();
         $problems = $this->addCategoriesToProblems($problems);
-        $problems['maxCount'] = $this->problemsByCategoryCount($category, $isVisible);
+        $problems['maxCount'] = $this->problemsByCategoryCount($category, $supplement);
         return $problems;
     }
 
@@ -131,8 +118,7 @@ class ProblemsData extends DataDb
         if ($isShowAll) {
             $supplement = '';
         } else {
-            $supplement = 'AND is_visible = ?';
-            $isVisible = 1;
+            $supplement = 'AND is_visible = 1';
         }
 
         $statement = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date , is_visible, solution
@@ -143,15 +129,11 @@ class ProblemsData extends DataDb
                 ORDER BY publish_date DESC, id DESC
                 LIMIT ?, ?");
 
-        if ($isShowAll) {
-            $statement = $statement->execute(array($category, $grade, $this->firstElementOfPage($page), $this->pageSize));
-        } else {
-            $statement = $statement->execute(array($category, $grade, $isVisible, $this->firstElementOfPage($page), $this->pageSize));
-        }
+        $statement = $statement->execute(array($category, $grade, $this->firstElementOfPage($page), $this->pageSize));
 
         $problems = $statement->fetchAllAssoc();
         $problems = $this->addCategoriesToProblems($problems);
-        $problems['maxCount'] = $this->problemsByGradeAndCategoryCount($grade, $category, $isVisible);
+        $problems['maxCount'] = $this->problemsByGradeAndCategoryCount($grade, $category, $supplement);
         return $problems;
     }
 
@@ -170,52 +152,47 @@ class ProblemsData extends DataDb
     }
 
 
-    public function problemsCount($isVisible)
+    public function problemsCount($supplement)
     {
-        $isVisible = $isVisible ? 1 : 0;
-        $count = $this->db->prepare('SELECT count(*) FROM tasks
-                WHERE is_visible = ?')
-            ->execute(array($isVisible))
+        $count = $this->db->prepare("SELECT count(*) FROM tasks $supplement")
+            ->execute()
             ->fetchRowNum()[0];
 
         return $count;
     }
 
 
-    public function problemsByGradeCount($grade, $isVisible)
+    public function problemsByGradeCount($grade, $supplement)
     {
-        $isVisible = $isVisible ? 1 : 0;
-        $count = $this->db->prepare('SELECT count(*)
-                FROM tasks WHERE class = ? AND is_visible = ?')
-            ->execute(array($grade, $isVisible))
+        $count = $this->db->prepare("SELECT count(*)
+                FROM tasks WHERE class = ? $supplement")
+            ->execute(array($grade))
             ->fetchRowNum()[0];
 
         return $count;
     }
 
 
-    public function problemsByCategoryCount($category, $isVisible)
+    public function problemsByCategoryCount($category, $supplement)
     {
-        $isVisible = $isVisible ? 1 : 0;
-        $count = $this->db->prepare('SELECT count(*) FROM tasks t
+        $count = $this->db->prepare("SELECT count(*) FROM tasks t
 	              JOIN tasks_categories tc on tc.task_id = t.id
 	              JOIN categories c ON c.id = tc.category_id
-                WHERE c.name = ? AND is_visible = ?')
-            ->execute(array($category, $isVisible))
+                WHERE c.name = ? $supplement")
+            ->execute(array($category))
             ->fetchRowNum()[0];
 
         return $count;
     }
 
 
-    public function problemsByGradeAndCategoryCount($grade, $category, $isVisible)
+    public function problemsByGradeAndCategoryCount($grade, $category, $supplement)
     {
-        $isVisible = $isVisible ? 1 : 0;
-        $count = $this->db->prepare('SELECT count(*) FROM tasks t
+        $count = $this->db->prepare("SELECT count(*) FROM tasks t
 	              JOIN tasks_categories tc on tc.task_id = t.id
 	              JOIN categories c ON c.id = tc.category_id
-                WHERE c.name = ? AND t.class = ? AND is_visible = ?')
-            ->execute(array($category, $grade, $isVisible))
+                WHERE c.name = ? AND t.class = ? $supplement")
+            ->execute(array($category, $grade))
             ->fetchRowNum()[0];
 
         return $count;
@@ -243,21 +220,22 @@ class ProblemsData extends DataDb
                WHERE id = ?")
             ->execute(array($problem->solution, $problem->condition, $problem->grade, $problem->id));
 
-            //
+        //
     }
 
 
-    public function delete($problemId) {
+    public function delete($problemId)
+    {
         $this->db->prepare("DELETE FROM tasks WHERE id = ?")
             ->execute(array($problemId));
     }
 
     public function toggleVisibility($problemId)
     {
-        $visibility = (bool) $this->db->prepare("SELECT is_visible FROM tasks WHERE id = ?")
+        $visibility = (bool)$this->db->prepare("SELECT is_visible FROM tasks WHERE id = ?")
             ->execute(array($problemId))
             ->fetchRowNum()[0];
-        $visibility = (int) !$visibility;
+        $visibility = (int)!$visibility;
 
         $this->db->prepare("UPDATE tasks
                 SET is_visible = ?

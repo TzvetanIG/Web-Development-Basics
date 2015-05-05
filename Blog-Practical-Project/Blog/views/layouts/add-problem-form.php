@@ -1,6 +1,7 @@
 <?= $this->getLayoutData('startPage'); ?>
 <?= $this->getLayoutData('header'); ?>
 <?= $this->getLayoutData('menu'); ?>
+<?= $this->getLayoutData('history'); ?>
     <div class="container">
         <?php if(isset($this->___data['errors'])){
             echo $this->getLayoutData('errors');

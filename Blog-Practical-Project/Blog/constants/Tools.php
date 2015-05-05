@@ -17,4 +17,12 @@ class Tools
             return 'checked';
         }
     }
+
+    public static function selected($v1, $v2) {
+        if($v1 === $v2){
+            return 'selected';
+        }
+
+        return null;
+    }
 } 
