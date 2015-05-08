@@ -59,19 +59,21 @@ class Problems extends BaseController
 
 
         if ($category == 'all') {
-            $this->saveHistoryPath(1, 'Всички категории');
             if ($grade == 'all') {
                 $problems = Data::problems()->getAllProblems($page, $isShowAll);
             } else {
                 $problems = Data::problems()->getProblemsByGrade($grade, $page, $isShowAll);
             }
+
+            $this->saveHistoryPath(1, 'Всички категории');
         } else {
-            $this->saveHistoryPath(1, $category);
             if ($grade == 'all') {
                 $problems = Data::problems()->getProblemsByCategory($category, $page, $isShowAll);
             } else {
                 $problems = Data::problems()->getProblemsByGradeAndCategory($grade, $category, $page, $isShowAll);
             }
+
+            $this->saveHistoryPath(1, $category);
         }
 
 
@@ -139,7 +141,7 @@ class Problems extends BaseController
         $this->redirectWhenUserIsNotLogged('/user/login');
 
         $problemId = $this->input->get(0, 'int');
-        $this->saveHistoryPath(2, 'Задача ' . $problemId);
+        $this->saveHistoryPath(3, 'Задача ' . $problemId);
         if (!$problemId) {
             $this->redirect($this->getLastHistoryPath());
         }

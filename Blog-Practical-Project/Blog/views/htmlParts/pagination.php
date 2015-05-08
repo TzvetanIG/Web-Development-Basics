@@ -15,4 +15,5 @@ $nextPage = ($page + 1) > 1 ? $maxPage : $page + 1;
         <li><a href="<?=  $url . $nextPage ?>">»</a></li>
     </ul>
 </div>
+
 <?php endif ?>

@@ -29,7 +29,7 @@ class ProblemsData extends DataDb
 
     public function getProblemsByUser($userId, $page)
     {
-        $problems = $this->db->prepare('SELECT id, `condition`, class, publish_date
+        $problems = $this->db->prepare('SELECT id, `condition`, class, publish_date, solution
                 FROM tasks WHERE user_id = ?
                 ORDER BY publish_date DESC, id
                 LIMIT ?, ?')
@@ -94,19 +94,16 @@ class ProblemsData extends DataDb
             $supplement = 'AND is_visible = 1';
         }
 
-        $statement = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date, is_visible, solution
+        $problems = $this->db->prepare("SELECT t.id, t.`condition`, t.class, t.publish_date, is_visible, solution
                 FROM tasks t
 	              JOIN tasks_categories tc on tc.task_id = t.id
 	              JOIN categories c ON c.id = tc.category_id
-                WHERE c.name = ? $supplement
+                WHERE c.name LIKE ? $supplement
                 ORDER BY publish_date DESC, id DESC
-                LIMIT ?, ?");
+                LIMIT ?, ?")
+            ->execute(array('%'.$category.'%', $this->firstElementOfPage($page), $this->pageSize))
+            ->fetchAllAssoc();
 
-
-        $statement = $statement->execute(array($category, $this->firstElementOfPage($page), $this->pageSize));
-
-
-        $problems = $statement->fetchAllAssoc();
         $problems = $this->addCategoriesToProblems($problems);
         $problems['maxCount'] = $this->problemsByCategoryCount($category, $supplement);
         return $problems;

@@ -7,15 +7,15 @@ use Models\Repositories\UsersData;
 use Models\User;
 use Constants\Codes;
 
-class Users extends BaseController{
-
-    private $usersData = null;
+class Users extends BaseController
+{
     /**
      * @var \Models\User | null
      */
     private $user = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $user = array(
             'username' => $this->input->post('username'),
@@ -26,28 +26,28 @@ class Users extends BaseController{
 
         $this->addViewData($user);
 
-        if($this->input->hasPost('submit')){
+        if ($this->input->hasPost('submit')) {
             $this->user = new User($user);
-            $this->usersData = new UsersData();
         }
     }
 
     // "/user/registration"
-    public function registration() {
+    public function registration()
+    {
         $this->redirectWhenUserIsLogged($this->getLastHistoryPath());
 
-        if($this->user != null) {
-            if($this->user->validateUserData()){
-                $errors = $this->usersData->register($this->user);
-                if(is_array($errors)){
-                    $this->addViewData($errors);
+        if ($this->user != null) {
+            if ($this->user->validateUserData()) {
+                $user = Data::users()->register($this->user);
+                if (is_array($user)) {
+                    $this->addViewData($user);
                 } else {
-                    $this->setUserSession($this->user);
+                    $this->setUserSession($user);
                     $this->redirect($this->getLastHistoryPath());
                 }
             } else {
-                $errors = array('errors' => $this->user->validator->getErrors());
-                $this->addViewData($errors);
+                $user = array('errors' => $this->user->validator->getErrors());
+                $this->addViewData($user);
             }
         }
 
@@ -56,16 +56,17 @@ class Users extends BaseController{
 
 
     // "/user/login"
-    public function login() {
+    public function login()
+    {
         $this->redirectWhenUserIsLogged($this->getLastHistoryPath());
 
-        if($this->user != null) {
-            $userDb = $this->usersData->getUser($this->user);
-            if($userDb && password_verify($this->input->post('password'), $userDb->password)){
+        if ($this->user != null) {
+            $userDb = Data::users()->getUser($this->user);
+            if ($userDb && password_verify($this->input->post('password'), $userDb->password)) {
                 $this->setUserSession($userDb);
                 $this->redirect($this->getLastHistoryPath());
             } else {
-                $errors = array('errors' => array(Codes::USERNAME.Codes::PASSWORD.Codes::WRONG));
+                $errors = array('errors' => array(Codes::USERNAME . Codes::PASSWORD . Codes::WRONG));
                 $this->addViewData($errors);
             }
         }
@@ -75,7 +76,8 @@ class Users extends BaseController{
 
 
     // "/user/logout"
-    public function logout(){
+    public function logout()
+    {
         $this->unsetUserSession();
         $this->redirectWhenUserIsNotLogged($this->getLastHistoryPath());
     }
@@ -99,15 +101,17 @@ class Users extends BaseController{
     }
 
 
-    private function setUserSession($user){
+    private function setUserSession($user)
+    {
         $this->session->username = $user->username;
         $this->session->email = $user->email;
         $this->session->userId = $user->id;
-        $this->session->isAdmin = (bool) $user->isAdmin;
+        $this->session->isAdmin = (bool)$user->isAdmin;
     }
 
 
-    private function unsetUserSession(){
+    private function unsetUserSession()
+    {
         $this->session->unsetSessionProperty('username');
         $this->session->unsetSessionProperty('email');
         $this->session->unsetSessionProperty('id');

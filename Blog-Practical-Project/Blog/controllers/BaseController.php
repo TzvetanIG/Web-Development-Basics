@@ -153,6 +153,7 @@ abstract class  BaseController
         $history[$position]['path'] = $_SERVER['PATH_INFO'];
         unset($history[$position + 1]);
         unset($history[$position + 2]);
+        unset($history[$position + 3]);
 
         $this->session->history = $history;
     }

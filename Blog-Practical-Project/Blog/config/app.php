@@ -1,5 +1,5 @@
 <?php
-$cnf['displayException'] = false;
+$cnf['displayException'] = true;
 $cnf['errorView'] = 'errors.error';
 
 $cnf['default_controller'] =  'Index';
