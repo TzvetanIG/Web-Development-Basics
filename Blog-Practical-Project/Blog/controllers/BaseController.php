@@ -60,7 +60,8 @@ abstract class  BaseController
         if (!$this->session->hasSessionProperty('refererPage')) {
             $this->session->refererPage = $_SERVER['HTTP_REFERER'];
         }
-    }
+
+     }
 
 
     protected function redirect($url)
@@ -169,6 +170,20 @@ abstract class  BaseController
     {
         $history = $this->session->history;
         return $history[$position]['path'];
+    }
+
+    protected function setCsrfCode() {
+        $code = md5(time());
+        $this->session->csrf = $code;
+    }
+
+    protected function hasCsrfCode() {
+        $csrfCode = $this->session->csrf;
+        return  $csrfCode === $this->input->post('csrf');
+    }
+
+    protected function getCsrfCode() {
+        return $this->session->csrf;
     }
 
     public function __call($name, $arguments) {

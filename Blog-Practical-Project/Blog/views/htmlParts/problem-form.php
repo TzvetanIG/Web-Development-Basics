@@ -25,3 +25,5 @@
         <textarea name="condition" class="form-control" rows="7" id="textArea"><?= $this->___data['condition'] ?></textarea>
     </div>
 </div>
+
+<input name="csrf" type="hidden" value="<?= $this->___data['csrf'] ?>"/>

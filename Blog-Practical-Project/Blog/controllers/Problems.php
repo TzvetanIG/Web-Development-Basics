@@ -33,19 +33,25 @@ class Problems extends BaseController
         $this->redirectWhenUserIsNotLogged('/user/login');
         $this->saveHistoryPath(2, 'Добави задача');
         if ($this->problem != null) {
+            if (!$this->hasCsrfCode()) {
+                die();
+            }
+
             if ($this->problem->validateProblemData()) {
                 $problemId = Data::problems()->addProblem($this->problem);
                 foreach ($this->problem->categories as $category) {
                     $categoryId = Data::categories()->add($category);
                     Data::categories()->addProblemToCategory($categoryId, $problemId);
                 }
-                $this->redirect($this->session->refererPage);
+                $this->redirect($this->getHistoryPathByPosition(0));
             } else {
                 $errors = array('errors' => $this->problem->validator->getErrors());
                 $this->addViewData($errors);
             }
         }
 
+        $this->setCsrfCode();
+        $this->addViewData(array('csrf' => $this->getCsrfCode()));
         $this->view->display('layouts.add-problem-form', $this->viewData);
     }
 
@@ -92,6 +98,10 @@ class Problems extends BaseController
         $this->saveHistoryPath(2, 'Редактиране на задача ' . $problemId);
 
         if ($this->problem != null) {
+            if (!$this->hasCsrfCode()) {
+                die();
+            }
+
             $this->problem->id = $problemId;
             Data::problems()->updateProblem($this->problem);
             Data::categories()->deleteCategoriesOfProblem($problemId);
@@ -112,7 +122,10 @@ class Problems extends BaseController
             'solution' => $problem['solution']
         );
 
-        $this->view->display('layouts.edit-problem-form', $data);
+        $this->setCsrfCode();
+        $this->addViewData($data);
+        $this->addViewData(array('csrf' => $this->getCsrfCode()));
+        $this->view->display('layouts.edit-problem-form', $this->viewData);
     }
 
 
